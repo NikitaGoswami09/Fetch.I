@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data Storage</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#displayArea {
+    margin-top: 20px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="userDataForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" required>
+
+            <button type="button" onclick="storeUserData()">Submit</button>
+        </form>
+
+        <button onclick="retrieveAndDisplay()">Retrieve and Display Data</button>
+
+        <div id="displayArea"></div>
+    </div>
+
+    <script>
+        function storeUserData() {
+    const name = document.getElementById('name').value;
+    const age = document.getElementById('age').value;
+
+    if (name && age) {
+        const userData = {
+            name: name,
+            age: age
+        };
+
+        localStorage.setItem('userData', JSON.stringify(userData));
+
+        // Clear input fields after storing data
+        document.getElementById('name').value = '';
+        document.getElementById('age').value = '';
+    } else {
+        alert('Please enter both name and age.');
+    }
+}
+
+function retrieveAndDisplay() {
+    const storedUserData = localStorage.getItem('userData');
+
+    if (storedUserData) {
+        const userData = JSON.parse(storedUserData);
+        const displayArea = document.getElementById('displayArea');
+        
+        // Create a table to display the data
+        const table = document.createElement('table');
+        const row = table.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+
+        cell1.textContent = 'Name';
+        cell2.textContent = 'Age';
+
+        const dataRow = table.insertRow();
+        const dataCell1 = dataRow.insertCell(0);
+        const dataCell2 = dataRow.insertCell(1);
+
+        dataCell1.textContent = userData.name;
+        dataCell2.textContent = userData.age;
+
+        // Append the table to the display area
+        displayArea.innerHTML = '';
+        displayArea.appendChild(table);
+    } else {
+        alert('No data found. Please submit the form first.');
+    }
+}
+
+    </script>
+</body>
+</html>
